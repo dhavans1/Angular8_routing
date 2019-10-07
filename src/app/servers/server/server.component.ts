@@ -16,9 +16,9 @@ export class ServerComponent implements OnInit, OnDestroy {
   constructor(private serversService: ServersService, private activeRoute: ActivatedRoute) { }
 
   ngOnInit() {
-    if(this.activeRoute.snapshot.params['id'] == undefined )
-      this.server = this.serversService.getServer(1);
-    else
+    // if(this.activeRoute.snapshot.params['id'] == undefined )
+    //   this.server = this.serversService.getServer(1);
+    // else
       this.sub = this.activeRoute.params.subscribe(
         (params) => {
             this.server = this.serversService.getServer(parseInt(params.id));  //Use ParseInt BECAUSE getServer() function does value and type check using === not just value (==)

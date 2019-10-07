@@ -1,0 +1,11 @@
+.online{
+    color: black;
+    background-color: rgb(124, 199, 11);    
+    border-radius: 5px;
+}
+
+.offline{
+    color: black;
+    background-color: rgb(238, 99, 99);
+    border-radius: 5px;
+}

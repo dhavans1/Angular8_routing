@@ -15,7 +15,6 @@ export class UsersService{
       ];
 
     getUserbyID(id: number){
-      console.log("user id ", id, " type: ", typeof(id))
         return this.users.find((user) => {return id == user.id} )
     }
 

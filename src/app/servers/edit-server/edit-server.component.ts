@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 
 import { ServersService } from '../servers.service';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 
 @Component({
@@ -15,7 +15,7 @@ export class EditServerComponent implements OnInit, OnDestroy {
   serverStatus = '';
   subscription: Subscription;
 
-  constructor(private serversService: ServersService, private activeRoute: ActivatedRoute) { }
+  constructor(private serversService: ServersService, private activeRoute: ActivatedRoute, private router: Router) { }
 
   ngOnInit() {
     if ( this.activeRoute.snapshot.params['id'] == undefined ){
@@ -35,7 +35,17 @@ export class EditServerComponent implements OnInit, OnDestroy {
   }
 
   onUpdateServer() {
-    this.serversService.updateServer(this.server.id, {name: this.serverName, status: this.serverStatus});
+    let updateSuccess = this.serversService.updateServer(this.server.id, {name: this.serverName, status: this.serverStatus});
+    if( updateSuccess) {
+      this.router.navigate(['/servers', this.server.id]); 
+  }
+    else
+      this.onUpdateFail();
+  }
+
+  onUpdateFail(){
+    //code to handle update failure
+    alert("Update failed");
   }
 
   ngOnDestroy(){

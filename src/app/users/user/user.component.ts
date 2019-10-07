@@ -14,8 +14,8 @@ export class UserComponent implements OnInit, OnDestroy {
   constructor(private activeRoute: ActivatedRoute, private usersSvcIns: UsersService) { }
 
   ngOnInit() {
-    if ( this.activeRoute.snapshot.params['id'] )
-      this.user = this.usersSvcIns.getUserbyID(this.activeRoute.snapshot.params['id']);
+    // if ( this.activeRoute.snapshot.params['id'] )
+    //   this.user = this.usersSvcIns.getUserbyID(this.activeRoute.snapshot.params['id']);
 
     this.userPathChangeSubsciption = this.activeRoute.params.subscribe(
       (params) => {

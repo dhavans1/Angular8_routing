@@ -10,16 +10,18 @@ import { ServersComponent } from './servers/servers.component';
 import { UserComponent } from './users/user/user.component';
 import { EditServerComponent } from './servers/edit-server/edit-server.component';
 import { ServerComponent } from './servers/server/server.component';
-import { ServersService } from './servers/servers.service';
 import { ServerChildComponent } from './servers/server-child/server-child.component';
 
 const appRoutes: Routes = [
   { path: '', component: HomeComponent  },
-  { path: 'users', component: UsersComponent },
-  { path: 'users/:id', component: UsersComponent },
-  { path: 'servers', component: ServersComponent  },
-  { path: 'servers/:id', component: ServersComponent  },
-  { path: 'servers/serverchild', component: ServerChildComponent  }
+  { path: 'users', component: UsersComponent, children: [
+    { path: ':id', component: UserComponent }
+    ] },
+  { path: 'servers', component: ServersComponent, children: [
+    { path: ':id', component: ServerComponent  },
+    { path: 'serverchild', component: ServerChildComponent  },
+    { path: 'edit/:id', component: EditServerComponent }
+    ] }
 ];
 
 @NgModule({
@@ -38,7 +40,7 @@ const appRoutes: Routes = [
     FormsModule,
     RouterModule.forRoot(appRoutes)
   ],
-  providers: [ServersService],
+  providers: [],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
