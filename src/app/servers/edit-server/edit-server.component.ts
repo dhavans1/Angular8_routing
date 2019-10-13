@@ -1,42 +1,50 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 
 import { ServersService } from '../servers.service';
-import { ActivatedRoute, Router } from '@angular/router';
-import { Subscription } from 'rxjs';
+import { ActivatedRoute, Router, Params, CanDeactivate } from '@angular/router';
+import { Subscription, Observable } from 'rxjs';
+import { CanDeactivateComponent } from 'src/app/can-deactivate-gaurd.service';
 
 @Component({
   selector: 'app-edit-server',
   templateUrl: './edit-server.component.html',
   styleUrls: ['./edit-server.component.css']
 })
-export class EditServerComponent implements OnInit, OnDestroy {
+export class EditServerComponent implements OnInit, OnDestroy, CanDeactivateComponent {
   server: {id: number, name: string, status: string};
   serverName = '';
   serverStatus = '';
-  subscription: Subscription;
+  isChanged = false;
+  allowEdit: boolean = false;
+  ParamsSubs: Subscription;
+  queryParamsSubs: Subscription;
 
   constructor(private serversService: ServersService, private activeRoute: ActivatedRoute, private router: Router) { }
 
   ngOnInit() {
-    if ( this.activeRoute.snapshot.params['id'] == undefined ){
-      this.server = this.serversService.getServer(1);
-      this.serverName = this.server.name;
-      this.serverStatus = this.server.status;
-    }
-    else{
-      this.subscription = this.activeRoute.params.subscribe(
-        (params) => {
+      this.ParamsSubs = this.activeRoute.params.subscribe(
+        (params: Params) => {
           this.server = this.serversService.getServer(parseInt(params['id']));
           this.serverName = this.server.name;
           this.serverStatus = this.server.status;
         }
-      )
-    }
+      );
+
+      this.queryParamsSubs = this.activeRoute.queryParams.subscribe(
+        (QParams: Params) => {
+          this.allowEdit = QParams.allowEdit === 'true' ? true : false;
+        }
+      );
+  }
+
+  onChange(){
+    this.isChanged = true;
   }
 
   onUpdateServer() {
     let updateSuccess = this.serversService.updateServer(this.server.id, {name: this.serverName, status: this.serverStatus});
     if( updateSuccess) {
+      this.isChanged = false;
       this.router.navigate(['/servers', this.server.id]); 
   }
     else
@@ -49,7 +57,15 @@ export class EditServerComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(){
-    if ( this.subscription )
-      this.subscription.unsubscribe();
+      this.ParamsSubs.unsubscribe();
+      this.queryParamsSubs.unsubscribe();
+  }
+
+  canDeactivate(): Observable<boolean> | Promise<boolean> | boolean {
+    if(this.isChanged)
+      confirm('Do you want to discard the changes?');
+    else
+      return true;
+      
   }
 }

@@ -8,7 +8,7 @@ export class ServersService {
     {
       id: 2,
       name: 'Testserver',
-      status: 'offline'
+      status: 'online'
     },
     {
       id: 3,

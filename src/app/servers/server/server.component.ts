@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 
 import { ServersService } from '../servers.service';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Router, Data } from '@angular/router';
 import { Subscription } from 'rxjs';
 
 @Component({
@@ -19,11 +19,17 @@ export class ServerComponent implements OnInit, OnDestroy {
     // if(this.activeRoute.snapshot.params['id'] == undefined )
     //   this.server = this.serversService.getServer(1);
     // else
-      this.sub = this.activeRoute.params.subscribe(
-        (params) => {
-            this.server = this.serversService.getServer(parseInt(params.id));  //Use ParseInt BECAUSE getServer() function does value and type check using === not just value (==)
-        }
-      );
+      // this.sub = this.activeRoute.params.subscribe(
+      //   (params) => {
+      //       this.server = this.serversService.getServer(parseInt(params.id));  //Use ParseInt BECAUSE getServer() function does value and type check using === not just value (==)
+      //   }
+      // );
+
+    this.activeRoute.data.subscribe(
+      (data: Data) => {
+        this.server = data['server'];
+      }
+    );
   }
 
   ngOnDestroy(){

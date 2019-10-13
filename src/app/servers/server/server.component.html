@@ -1,6 +1,7 @@
-<h5>{{ server.name }}</h5>
+<h5><b>{{ server.name }}</b></h5>
 <p>Server status is {{ server.status }}</p>
 <hr />
 <button
 class="btn btn-primary"
-[routerLink]="['/servers', 'edit', server.id]">Edit Server</button>
+[routerLink]="['/servers', 'edit', server.id]"
+[queryParams]="{ allowEdit: server.status == 'online' ? 'false' : 'true' }">Edit Server</button>

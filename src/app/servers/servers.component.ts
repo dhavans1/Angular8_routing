@@ -5,7 +5,7 @@ import { ServersService } from './servers.service';
   selector: 'app-servers',
   templateUrl: './servers.component.html',
   styleUrls: ['./servers.component.css'],
-  providers: [ServersService]
+  providers: []
 })
 export class ServersComponent implements OnInit {
   private servers: {id: number, name: string, status: string}[] = [];

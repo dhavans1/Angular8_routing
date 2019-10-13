@@ -1,21 +1,30 @@
-<div class="form-group">
-  <label for="name">Server Name</label>
-  <input
-    type="text"
-    id="name"
-    class="form-control"
-    [(ngModel)]="serverName">
+<div *ngIf="!allowEdit">
+  <b>{{ server.name }}</b>
+  <br>
+  Do not have enough permissions to Update the server
 </div>
-<div class="form-group">
-  <label for="status">Server Status</label>
-  <select
-    id="status"
-    class="form-control"
-    [(ngModel)]="serverStatus">
-    <option value="online">Online</option>
-    <option value="offline">Offline</option>
-  </select>
+<div *ngIf="allowEdit">
+    <div class="form-group">
+        <label for="name">Server Name</label>
+        <input
+          type="text"
+          id="name"
+          class="form-control"
+          [(ngModel)]="serverName" (change)="onChange()">
+      </div>
+      <div class="form-group">
+        <label for="status">Server Status</label>
+        <select
+          id="status"
+          class="form-control"
+          [(ngModel)]="serverStatus" (change)="onChange()">
+          <option value="online">Online</option>
+          <option value="offline">Offline</option>
+        </select>
+      </div>
+      <button
+        class="btn btn-primary"
+        (click)="onUpdateServer()">
+        Update Server
+      </button>      
 </div>
-<button
-  class="btn btn-primary"
-  (click)="onUpdateServer()">Update Server</button>
